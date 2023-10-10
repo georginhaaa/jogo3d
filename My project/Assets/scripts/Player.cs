@@ -75,9 +75,15 @@ public class Player : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                anim.SetInteger("transition", 2);
+                StartCoroutine("Attack");
             }
         }
+    }
+
+    IEnumerator Attack()
+    {
+        anim.SetInteger("transition",2);
+        yield return new WaitForSeconds(1f);
     }
 }
        
