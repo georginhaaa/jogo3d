@@ -3042,7 +3042,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.2604301, y: 0.00000006793748, z: -0.000000018325322, w: 0.9654927}
+  m_LocalRotation: {x: 0.2604301, y: -0.00000006793748, z: 0.000000018325322, w: 0.9654927}
   m_LocalPosition: {x: 499.83, y: 5.9999933, z: 492.676}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4033,7 +4033,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1246562941}
-  m_LocalRotation: {x: -0.1188997, y: -0.8458628, z: 0.21177715, w: -0.47489935}
+  m_LocalRotation: {x: -0.11889972, y: -0.84586287, z: 0.21177718, w: -0.47489938}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4136,7 +4136,7 @@ GameObject:
   - component: {fileID: 1252343061}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6889,7 +6889,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2072495413}
-  m_LocalRotation: {x: -0.12749548, y: -0.84188163, z: 0.22708748, w: -0.47266415}
+  m_LocalRotation: {x: -0.12749551, y: -0.84188163, z: 0.22708748, w: -0.4726642}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7156,6 +7156,7 @@ MonoBehaviour:
   speed: 5
   smoothRotTime: 0.1
   gravity: 150
+  colliderRadius: 1.08
 --- !u!143 &5989831477983228359
 CharacterController:
   m_ObjectHideFlags: 0
