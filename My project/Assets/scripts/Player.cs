@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     private Transform cam;
 
     Vector3 moveDirection;
+
+    private bool isWalking;
+    
     public float gravity;
 
     private Animator anim;
@@ -48,21 +51,35 @@ public class Player : MonoBehaviour
 
             if (direction.magnitude > 0)
             {
-                float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-                float smoothAngle =
-                    Mathf.SmoothDampAngle(transform.eulerAngles.y, angle, ref turnSmoothVelocity, smoothRotTime);
+                if (!anim.GetBool("attacking"))
+                {
+                    float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                    float smoothAngle =
+                        Mathf.SmoothDampAngle(transform.eulerAngles.y, angle, ref turnSmoothVelocity, smoothRotTime);
 
-                transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
-                moveDirection = Quaternion.Euler(0f, angle, 0f) * Vector3.forward * speed;
+                    transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
+                    moveDirection = Quaternion.Euler(0f, angle, 0f) * Vector3.forward * speed;
 
-                anim.SetInteger("transition", 1);
+                    anim.SetInteger("transition", 1);
 
+                    isWalking = true;
+
+                }
+                else
+                {
+                    anim.SetBool("walking", false);
+                    moveDirection = Vector3.zero;
+                }
 
             }
-            else
+            else if(isWalking)
             {
-                //anim.SetInteger("transition", 0);
+                //é executado quando o player está parado
+                anim.SetBool("walking", false);
+                anim.SetInteger("transition", 0);
                 moveDirection = Vector3.zero;
+
+                isWalking = false;
             }
         }
 
@@ -79,13 +96,25 @@ public class Player : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                StartCoroutine("Attack");
+
+                if (anim.GetBool("walking"))
+                {
+                    anim.SetBool("walking", false);
+                    anim.SetInteger("transition",0);
+                }
+
+                if (anim.GetBool("walking"))
+                {
+                    StartCoroutine("Attack"); 
+                }
+                
             }
         }
     }
 
     IEnumerator Attack()
     {
+        anim.SetBool("walking", true);
         anim.SetInteger("transition", 2);
         yield return new WaitForSeconds(0.04f);
         GetEnemieslist();
@@ -97,16 +126,18 @@ public class Player : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
+        
 
         anim.SetInteger("transition", 0);
+        anim.SetBool("attacking", false);
     }
 
     void GetEnemieslist()
     {
         foreach (Collider c in Physics.OverlapSphere((transform.position + transform.forward * colliderRadius),
-                     colliderRadius)) ;
+                     colliderRadius))
         {
-            if (cam.gameObject.CompareTag("Enemy"))
+            if (c.gameObject.CompareTag("Enemy"))
             {
                 enemyList.Add(c.transform);
             }
