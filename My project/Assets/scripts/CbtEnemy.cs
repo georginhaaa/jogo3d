@@ -19,6 +19,10 @@ public class CbtEnemy : MonoBehaviour
 
     [Header("Others")] 
     private Transform player;
+
+    private bool walking;
+    private bool attacking;
+    
     
     
     
@@ -36,23 +40,39 @@ public class CbtEnemy : MonoBehaviour
     void Update()
     {
         float distance = Vector3.Distance(transform.position, transform.position);
-        
-            if (distance <= lookRadius)
+
+        if (distance <= lookRadius)
+
+        {
+            agent.isStopped = false;
+
+            if (!attacking)
             {
-                Debug.Log ("Dentro do raio");
+                Debug.Log("Dentro do raio");
                 agent.SetDestination(player.position);
                 anim.SetBool("Walk Forward", true);
+                walking = true;
             }
-            if(distance <= agent.stoppingDistance)
+
+            if (distance <= agent.stoppingDistance)
             {
-                
+                agent.isStopped = true;
             }
             else
             {
-                Debug.Log ("Fora do raio");
-                anim.SetBool("Walk Forward", false);
+                attacking = false;
             }
+        }
+        else
+        {
+            agent.isStopped = true;
+            Debug.Log("Fora do raio");
+            anim.SetBool("Walk Forward", false);
+            walking = false;
+            attacking = false;
+        }
     }
+
 
     private void OnDrawGizmosSelected()
     {
@@ -60,3 +80,4 @@ public class CbtEnemy : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, lookRadius);
     }
 }
+
