@@ -29,7 +29,7 @@ public class CbtEnemy : MonoBehaviour
         capsule = GetComponent<CapsuleCollider>();
         agent = GetComponent<NavMeshAgent>();
         
-        player = GameObject.FindGameObjectWithTag("player").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame
@@ -39,11 +39,18 @@ public class CbtEnemy : MonoBehaviour
         
             if (distance <= lookRadius)
             {
-                Debug.Log = ("Dentro do raio");
+                Debug.Log ("Dentro do raio");
+                agent.SetDestination(player.position);
+                anim.SetBool("Walk Forward", true);
+            }
+            if(distance <= agent.stoppingDistance)
+            {
+                
             }
             else
             {
-                Debug.Log = ("Fora do raio");
+                Debug.Log ("Fora do raio");
+                anim.SetBool("Walk Forward", false);
             }
     }
 
