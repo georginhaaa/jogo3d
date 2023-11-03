@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,10 +16,15 @@ public class Player : MonoBehaviour
     Vector3 moveDirection;
     public float gravity;
 
+    private Animator anim;
+    public float colliderRadius;
+
+    public List<Transform> enemyList = new List<Transform>();
 
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         cam = Camera.main.transform;
     }
@@ -27,6 +33,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         Move();
+        GetMouseInput();
     }
 
     void Move()
@@ -47,10 +54,12 @@ public class Player : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f); 
                 moveDirection = Quaternion.Euler(0f, angle, 0f) * Vector3.forward * speed;
                 
+                anim.SetInteger("transition", 1);
 
             }
             else
             {
+                anim.SetInteger("transition", 0);
                 moveDirection = Vector3.zero;
             }
         }
@@ -60,6 +69,55 @@ public class Player : MonoBehaviour
         controller.Move(moveDirection * speed * Time.deltaTime);
         
         
+    }
+
+    void GetMouseInput()
+    {
+        if (controller.isGrounded)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                StartCoroutine("Attack");
+            }
+        }
+    }
+
+    IEnumerator Attack()
+    {
+        anim.SetInteger("transition", 2);
+        yield return new WaitForSeconds(1f);
+        
+        GetEnemiesList();
+
+        foreach (Transform e in enemyList)
+        {
+            Debug.Log(e.name);
+        }
+
+        yield return new WaitForSeconds(1f);
+        
+        anim.SetInteger("transition", 0);
+
+
+
+    }
+
+    void GetEnemiesList()
+    {
+        enemyList.Clear();
+        foreach (Collider c in Physics.OverlapSphere((transform.position + transform.forward * colliderRadius), colliderRadius))
+        {
+            if (c.gameObject.CompareTag("Enemy"))
+            {
+                enemyList.Add(c.transform);
+            }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + transform.forward, colliderRadius);
     }
 }
        
