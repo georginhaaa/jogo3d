@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,23 +11,14 @@ public class Player : MonoBehaviour
     public float smoothRotTime;
     private float turnSmoothVelocity;
     private Transform cam;
-
-    Vector3 moveDirection;
-
-    private bool isWalking;
     
+    Vector3 moveDirection;
     public float gravity;
 
-    private Animator anim;
-
-    public float colliderRadius;
-
-    public List<Transform> enemyList = new List<Transform>();
 
     // Start is called before the first frame update
     void Start()
     {
-        anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         cam = Camera.main.transform;
     }
@@ -37,7 +27,6 @@ public class Player : MonoBehaviour
     void Update()
     {
         Move();
-        GetMouseInput();
     }
 
     void Move()
@@ -51,108 +40,28 @@ public class Player : MonoBehaviour
 
             if (direction.magnitude > 0)
             {
-                if (!anim.GetBool("attacking"))
-                {
-                    float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-                    float smoothAngle =
-                        Mathf.SmoothDampAngle(transform.eulerAngles.y, angle, ref turnSmoothVelocity, smoothRotTime);
+                float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                float smoothAngle =
+                    Mathf.SmoothDampAngle(transform.eulerAngles.y, angle, ref turnSmoothVelocity, smoothRotTime);
 
-                    transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
-                    moveDirection = Quaternion.Euler(0f, angle, 0f) * Vector3.forward * speed;
-
-                    anim.SetInteger("transition", 1);
-
-                    isWalking = true;
-
-                }
-                else
-                {
-                    anim.SetBool("walking", false);
-                    moveDirection = Vector3.zero;
-                }
+                transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f); 
+                moveDirection = Quaternion.Euler(0f, angle, 0f) * Vector3.forward * speed;
+                
 
             }
-            else if(isWalking)
+            else
             {
-                //é executado quando o player está parado
-                anim.SetBool("walking", false);
-                anim.SetInteger("transition", 0);
                 moveDirection = Vector3.zero;
-
-                isWalking = false;
             }
         }
 
         moveDirection.y -= gravity * Time.deltaTime;
-
-        controller.Move(moveDirection * speed * Time.deltaTime);
-
-
-    }
-
-    void GetMouseInput()
-    {
-        if (controller.isGrounded)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-
-                if (anim.GetBool("walking"))
-                {
-                    anim.SetBool("walking", false);
-                    anim.SetInteger("transition",0);
-                }
-
-                if (anim.GetBool("walking"))
-                {
-                    StartCoroutine("Attack"); 
-                }
-                
-            }
-        }
-    }
-
-    IEnumerator Attack()
-    {
-        anim.SetBool("walking", true);
-        anim.SetInteger("transition", 2);
-        yield return new WaitForSeconds(0.04f);
-        GetEnemieslist();
-
-        enemyList.Clear();
-        foreach(Transform e in enemyList)
-        {
-            Debug.Log(e.name);
-        }
-
-        yield return new WaitForSeconds(1f);
         
-
-        anim.SetInteger("transition", 0);
-        anim.SetBool("attacking", false);
+        controller.Move(moveDirection * speed * Time.deltaTime);
+        
+        
     }
-
-    void GetEnemieslist()
-    {
-        foreach (Collider c in Physics.OverlapSphere((transform.position + transform.forward * colliderRadius),
-                     colliderRadius))
-        {
-            if (c.gameObject.CompareTag("Enemy"))
-            {
-                enemyList.Add(c.transform);
-            }
-
-        }
-    }
-
-    private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position + transform.forward, colliderRadius);
-        }
-    }
-
-
+}
        
         
     
