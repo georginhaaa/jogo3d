@@ -8,10 +8,11 @@ using UnityEngine.AI;
 public class CombatEnemy : MonoBehaviour
 {
     [Header("Atributes")]
-    public float totalHealth;
+    public float totalHealth = 100;
     public float attackDamage;
     public float movementSpeed;
     public float lookRadius;
+    public float colliderRadius = 2f;
 
     [Header("Components")]
     private Animator anim;
@@ -23,6 +24,9 @@ public class CombatEnemy : MonoBehaviour
 
     private bool attacking;
     private bool walking;
+    private bool hitting;
+
+    private bool waitFor;
     
     
     
@@ -68,8 +72,7 @@ public class CombatEnemy : MonoBehaviour
             {
                 // o player esta dentro do raio de ataque
                 // metodo de ataque
-                agent.isStopped = true;
-                Debug.Log("Atacar");
+                StartCoroutine("Attack");
             }
             else
             {
@@ -85,7 +88,66 @@ public class CombatEnemy : MonoBehaviour
            attacking = false;
         }
     }
+    
+    IEnumerator Attack()
+    {
+        if (!waitFor)
+        {
+            waitFor = true;
+            attacking = true;
+            walking = false;
+            anim.SetBool("Walk Forward", false);
+            anim.SetBool("Bite Attack", true);
+            yield return new WaitForSeconds(1.2f);
+            GetPlayer(); 
+            //yield return new WaitForSeconds(1f);
+            waitFor = false;
+        }
+    }
 
+    void GetPlayer()
+    {
+       
+        foreach (Collider c in Physics.OverlapSphere((transform.position + transform.forward * colliderRadius), colliderRadius))
+        {
+            if (c.gameObject.CompareTag("Player"))
+            {
+              //aplicar dano no player 
+              Debug.Log("Bateu no Player");
+            }
+        }
+    }
+
+    public void GetHit(float damage)
+    {
+        totalHealth -= damage;
+
+        if (totalHealth > 0)
+        {
+            // inimigo está vivo
+            StopCoroutine("Attack");
+            anim.SetTrigger("Take Damage");
+            hitting = true;
+            
+
+        }
+        else
+        {
+            //inimigo morre
+            anim.SetTrigger("Die");
+        }
+    }
+
+    IEnumerator RecoveryFromHit()
+    {
+        yield return new WaitForSeconds(1f);
+        anim.SetBool("Walk Forward", false);
+        anim.SetBool("Bite Attack", false);
+        hitting = false;
+        waitFor = false;
+
+    }
+    
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;

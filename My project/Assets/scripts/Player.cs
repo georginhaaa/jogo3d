@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
     public List<Transform> enemyList = new List<Transform>();
     private bool isWalking;
 
+    public float damage = 20;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,15 +73,15 @@ public class Player : MonoBehaviour
                         moveDirection = Vector3.zero;
                     }
                 }
-                else if(isWalking)
-                    {
+                else if(isWalking) 
+                {
                         //executado quando o player está parado
                         anim.SetBool("walking",false);
                         anim.SetInteger("transition", 0);
                         moveDirection = Vector3.zero;
 
-                        isWalking = false;
-                    }
+                        isWalking = false; 
+                }
                  
             }
 
@@ -122,7 +124,13 @@ public class Player : MonoBehaviour
 
         foreach (Transform e in enemyList)
         {
-            Debug.Log(e.name);
+            //aplicar dano ao inimigo
+            CombatEnemy enemy = e.GetComponent<CombatEnemy>();
+
+            if (enemy != null)
+            {
+                enemy.GetHit(damage);
+            }
         }
 
         yield return new WaitForSeconds(1f);

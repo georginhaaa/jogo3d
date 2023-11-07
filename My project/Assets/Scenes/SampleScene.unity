@@ -3074,8 +3074,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.2604301, y: -0.00000006793748, z: 0.000000018325322, w: 0.9654927}
-  m_LocalPosition: {x: 499.83, y: 5.9999933, z: 492.676}
+  m_LocalRotation: {x: 0.2604301, y: 0.00000006793748, z: -0.000000018325322, w: 0.9654927}
+  m_LocalPosition: {x: 498.21, y: 5.9999933, z: 500.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4073,7 +4073,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1246562941}
-  m_LocalRotation: {x: -0.11889972, y: -0.84586287, z: 0.21177718, w: -0.47489938}
+  m_LocalRotation: {x: -0.1188997, y: -0.8458628, z: 0.21177715, w: -0.47489935}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4948,6 +4948,7 @@ MonoBehaviour:
   attackDamage: 0
   movementSpeed: 0
   lookRadius: 4.01
+  colliderRadius: 2
 --- !u!195 &1511826460
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5083,6 +5084,10 @@ PrefabInstance:
     - target: {fileID: 100120, guid: b85694974d0a53e4a9e89e26232c252a, type: 3}
       propertyPath: m_Name
       value: Spiderling Venom-Blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 100120, guid: b85694974d0a53e4a9e89e26232c252a, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 400120, guid: b85694974d0a53e4a9e89e26232c252a, type: 3}
       propertyPath: m_RootOrder
@@ -5436,7 +5441,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573302861}
   m_LocalRotation: {x: -0, y: 0.8719711, z: -0, w: -0.48955753}
-  m_LocalPosition: {x: 499.83, y: 5.9999933, z: 492.676}
+  m_LocalPosition: {x: 498.21, y: 5.9999933, z: 500.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6966,7 +6971,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2072495413}
-  m_LocalRotation: {x: -0.12749551, y: -0.84188163, z: 0.22708748, w: -0.4726642}
+  m_LocalRotation: {x: -0.12749548, y: -0.84188163, z: 0.22708748, w: -0.47266415}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7207,6 +7212,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 68.44366
       objectReference: {fileID: 0}
+    - target: {fileID: 1131430477212454548, guid: 99d05dcaa9853d2408a22c827de8df48, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0014550127
+      objectReference: {fileID: 0}
+    - target: {fileID: 1131430477212454548, guid: 99d05dcaa9853d2408a22c827de8df48, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.12976083
+      objectReference: {fileID: 0}
+    - target: {fileID: 1131430477212454548, guid: 99d05dcaa9853d2408a22c827de8df48, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7858916
+      objectReference: {fileID: 0}
+    - target: {fileID: 1131430477212454548, guid: 99d05dcaa9853d2408a22c827de8df48, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1131430477212454548, guid: 99d05dcaa9853d2408a22c827de8df48, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.61836433
+      objectReference: {fileID: 0}
+    - target: {fileID: 1131430477212454548, guid: 99d05dcaa9853d2408a22c827de8df48, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 76.394
+      objectReference: {fileID: 0}
     - target: {fileID: 1744619432618399062, guid: 99d05dcaa9853d2408a22c827de8df48, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -2.535226
@@ -7437,7 +7466,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6141466332561801595, guid: 99d05dcaa9853d2408a22c827de8df48, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 499.83
+      value: 498.21
       objectReference: {fileID: 0}
     - target: {fileID: 6141466332561801595, guid: 99d05dcaa9853d2408a22c827de8df48, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7445,7 +7474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6141466332561801595, guid: 99d05dcaa9853d2408a22c827de8df48, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 502.176
+      value: 509.56
       objectReference: {fileID: 0}
     - target: {fileID: 6141466332561801595, guid: 99d05dcaa9853d2408a22c827de8df48, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7699,6 +7728,7 @@ MonoBehaviour:
   gravity: 150
   colliderRadius: 1.76
   enemyList: []
+  damage: 20
 --- !u!143 &5989831477983228359
 CharacterController:
   m_ObjectHideFlags: 0
