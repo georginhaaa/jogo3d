@@ -20,6 +20,9 @@ public class CombatEnemy : MonoBehaviour
 
     [Header("Others")] 
     private Transform player;
+
+    private bool attacking;
+    private bool walking;
     
     
     
@@ -48,11 +51,38 @@ public class CombatEnemy : MonoBehaviour
 
         if (distance <= lookRadius)
         {
-            Debug.Log("dentro do raio");
+            //dentro do raio
+            agent.isStopped = false;
+            
+            if (!attacking)
+            {
+                
+                agent.SetDestination(player.position);
+                anim.SetBool("Walk Forward", true);
+                walking = true;
+            }
+            
+            
+            
+            if (distance <= agent.stoppingDistance)
+            {
+                // o player esta dentro do raio de ataque
+                // metodo de ataque
+                agent.isStopped = true;
+                Debug.Log("Atacar");
+            }
+            else
+            {
+                attacking = false;
+            }
         }
         else
         {
-           Debug.Log("fora do raio");
+           //fora do raio
+           agent.isStopped = true;
+           anim.SetBool("Walk Forward", false);
+           walking = false;
+           attacking = false;
         }
     }
 
