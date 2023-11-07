@@ -13,6 +13,7 @@ public class CombatEnemy : MonoBehaviour
     public float movementSpeed;
     public float lookRadius;
     public float colliderRadius = 2f;
+    public float rotationSpeed;
 
     [Header("Components")]
     private Animator anim;
@@ -51,59 +52,65 @@ public class CombatEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float distance = Vector3.Distance(player.position, transform.position);
-
-        if (distance <= lookRadius)
+        if (totalHealth > 0)
         {
-            //dentro do raio
-            agent.isStopped = false;
-            
-            if (!attacking)
+
+            float distance = Vector3.Distance(player.position, transform.position);
+
+            if (distance <= lookRadius)
             {
-                
-                agent.SetDestination(player.position);
-                anim.SetBool("Walk Forward", true);
-                walking = true;
-            }
-            
-            
-            
-            if (distance <= agent.stoppingDistance)
-            {
-                // o player esta dentro do raio de ataque
-                // metodo de ataque
-                StartCoroutine("Attack");
+                //dentro do raio
+                agent.isStopped = false;
+
+                if (!attacking)
+                {
+
+                    agent.SetDestination(player.position);
+                    anim.SetBool("Walk Forward", true);
+                    walking = true;
+                }
+
+
+
+                if (distance <= agent.stoppingDistance)
+                {
+                    // o player esta dentro do raio de ataque
+                    // metodo de ataque
+                    StartCoroutine("Attack");
+                    LookTarget();
+                }
+                else
+                {
+                    attacking = false;
+                }
             }
             else
             {
+                //fora do raio
+                agent.isStopped = true;
+                anim.SetBool("Walk Forward", false);
+                walking = false;
                 attacking = false;
             }
         }
-        else
-        {
-           //fora do raio
-           agent.isStopped = true;
-           anim.SetBool("Walk Forward", false);
-           walking = false;
-           attacking = false;
-        }
     }
-    
+
     IEnumerator Attack()
-    {
-        if (!waitFor)
         {
-            waitFor = true;
-            attacking = true;
-            walking = false;
-            anim.SetBool("Walk Forward", false);
-            anim.SetBool("Bite Attack", true);
-            yield return new WaitForSeconds(1.2f);
-            GetPlayer(); 
-            //yield return new WaitForSeconds(1f);
-            waitFor = false;
+            if (!waitFor && !hitting)
+            {
+                waitFor = true;
+                attacking = true;
+                walking = false;
+                anim.SetBool("Walk Forward", false);
+                anim.SetBool("Bite Attack", true);
+                yield return new WaitForSeconds(1.2f);
+                GetPlayer();
+                //yield return new WaitForSeconds(1f);
+                waitFor = false;
+            }
         }
-    }
+    
 
     void GetPlayer()
     {
@@ -128,7 +135,8 @@ public class CombatEnemy : MonoBehaviour
             StopCoroutine("Attack");
             anim.SetTrigger("Take Damage");
             hitting = true;
-            
+            StartCoroutine("RecoveryFromHit");
+
 
         }
         else
@@ -146,6 +154,13 @@ public class CombatEnemy : MonoBehaviour
         hitting = false;
         waitFor = false;
 
+    }
+
+    void LookTarget()
+    {
+        Vector3 direction = (player.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x,0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
     
     private void OnDrawGizmosSelected()
