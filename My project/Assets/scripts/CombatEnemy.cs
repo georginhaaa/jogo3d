@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = System.Random;
 
 public class CombatEnemy : MonoBehaviour
 {
@@ -29,16 +30,20 @@ public class CombatEnemy : MonoBehaviour
 
     private bool waitFor;
     public bool playerIsDead;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    [Header("WayPoints")] public List<Transform> wayPoints = new List<Transform>();
+    public int currentPathindex;
+    public float pathDistance;
+
+
+
+
+
+
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -88,12 +93,32 @@ public class CombatEnemy : MonoBehaviour
             else
             {
                 //fora do raio
-                agent.isStopped = true;
+                //agent.isStopped = true;
                 anim.SetBool("Walk Forward", false);
                 walking = false;
                 attacking = false;
+                MoveToWayPoint();
             }
         }
+    }
+    
+    void MoveToWayPoint() 
+    {
+        if(wayPoints.Count > 0)
+        {
+            float distance = Vector3.Distance(wayPoints[currentPathindex].position, transform.position);
+            agent.destination = wayPoints[currentPathindex].position;
+
+            if (distance <= pathDistance)
+            {
+                //parte para o proximo ponto
+               // currentPathindex = Random.Range(0, wayPoints.Count);
+            }
+
+            anim.SetBool("Walk Forward", true);
+            walking = true;
+        }
+        
     }
 
     IEnumerator Attack()
