@@ -112,7 +112,7 @@ public class CombatEnemy : MonoBehaviour
             if (distance <= pathDistance)
             {
                 //parte para o proximo ponto
-               // currentPathindex = Random.Range(0, wayPoints.Count);
+                //currentPathindex = Random.Range(0, wayPoints.Count);
             }
 
             anim.SetBool("Walk Forward", true);
